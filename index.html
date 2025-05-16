@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toddler Clicking Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="menu">
+        <h1>Toddler Clicking Game</h1>
+        <div class="difficulty-container">
+            <h2>Select Difficulty:</h2>
+            <div class="difficulty-row">
+                <button id="level0" class="difficulty-btn">Level 0 - Very Easy</button>
+                <button id="level1" class="difficulty-btn active">Level 1 - Easy</button>
+                <button id="level2" class="difficulty-btn">Level 2 - Medium</button>
+                <button id="level3" class="difficulty-btn">Level 3 - Hard</button>
+            </div>
+            <div class="difficulty-row">
+                <button id="level4" class="difficulty-btn">Level 4</button>
+                <button id="level5" class="difficulty-btn">Level 5</button>
+                <button id="level6" class="difficulty-btn">Level 6</button>
+            </div>
+            <div class="difficulty-row">
+                <button id="level7" class="difficulty-btn">Level 7</button>
+                <button id="level8" class="difficulty-btn">Level 8</button>
+                <button id="level9" class="difficulty-btn">Level 9</button>
+                <button id="level10" class="difficulty-btn">Level 10 - Expert</button>
+            </div>
+        </div>
+        <button id="start-game" class="start-btn">Start Game</button>
+    </div>
+    
+    <div id="game-container" style="display: none;">
+        <div id="target"></div>
+        <div id="score">Clicks: 0</div>
+        <div id="accuracy">Accuracy: 100%</div>
+        <div id="streak-counter">Streak: 0</div>
+        <div id="level-display">Level: 0</div>
+        <button id="menu-btn">Menu</button>
+    </div>
+    
+    <div id="game-over" style="display: none;">
+        <h1>Game Over!</h1>
+        <p>Accuracy fell below 30%</p>
+        <div class="final-stats">
+            <p id="final-score">Score: 0</p>
+            <p id="final-accuracy">Accuracy: 0%</p>
+            <p id="final-level">Level: 0</p>
+        </div>
+        <button id="try-again-btn">Try Again</button>
+        <button id="back-to-menu-btn">Back to Menu</button>
+    </div>
+    
+    <div id="level-complete" style="display: none;">
+        <h1>Level Complete!</h1>
+        <p>10 successful clicks in a row!</p>
+        <div class="level-stats">
+            <p id="level-score">Score: 0</p>
+            <p id="level-accuracy">Accuracy: 0%</p>
+            <p id="level-completed">Level Completed: 0</p>
+        </div>
+        <button id="next-level-btn">Next Level</button>
+        <button id="level-menu-btn">Back to Menu</button>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
