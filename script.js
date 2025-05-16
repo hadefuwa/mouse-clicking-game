@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 targetEl.style.transform = 'scale(1.0)';
             };
         }
-        // Level 4 - Harder: Smaller target, shrinks on hover
+        // Level 4 - Challenging: Smaller target, shrinks on hover
         else if (currentDifficulty === 4) {
             targetEl.style.width = '70px';
             targetEl.style.height = '70px';
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 targetEl.style.transform = 'scale(0.8)';
             };
         }
-        // Level 5 - Even smaller target with rapid shrink effect
+        // Level 5 - Advanced: Even smaller target with rapid shrink effect
         else if (currentDifficulty === 5) {
             targetEl.style.width = '60px';
             targetEl.style.height = '60px';
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add slight movement
             startMovingTarget(3000);
         }
-        // Level 6 - Small target with faster fade and movement
+        // Level 6 - Tricky: Small target with faster fade and movement
         else if (currentDifficulty === 6) {
             targetEl.style.width = '55px';
             targetEl.style.height = '55px';
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startFadeEffect(0.4, 2000);
             startMovingTarget(2500);
         }
-        // Level 7 - Small target with faster fade and rapid movement plus size changes
+        // Level 7 - Complex: Small target with faster fade and rapid movement plus size changes
         else if (currentDifficulty === 7) {
             targetEl.style.width = '50px';
             targetEl.style.height = '50px';
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add size change effect - pulsate
             startSizeChangeEffect(0.8, 1.2, 1800);
         }
-        // Level 8 - Small target with unpredictable movement and teleportation
+        // Level 8 - Advanced: Small target with unpredictable movement and teleportation
         else if (currentDifficulty === 8) {
             targetEl.style.width = '50px';
             targetEl.style.height = '50px';
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             startTeleportEffect(5000);
         }
-        // Level 9 - Very small target with erratic movement, gliding and strong fade
+        // Level 9 - Master: Very small target with erratic movement, gliding and strong fade
         else if (currentDifficulty === 9) {
             targetEl.style.width = '45px';
             targetEl.style.height = '45px';
@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function playMissSound() {
         // Create audio element for miss sound
         const audio = new Audio();
-        audio.src = 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAeMwAUFBQUFCgUFBQUFDMzMzMzM0dHR0dHR1tbW1tbW2ZmZmZmZnp6enp6eoODg4ODg5eXl5eXl6ysrKysrMDAwMDAwNTU1NTU1Ojo6Ojo6P39/f39/f///////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7UGQAAANUMEoFPeACNQUIwKe8AEeQUaQU94AIwgoghp7wAQAAAP/////KZ0UP/JBEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg/P/8YP/kQMKJ98QMHDgPmgIEBcF0Q3jgPHaBwEcU7JoUJ0EIoCBwMIHDQIKg4EAIVESBEKCcy4bkHKAcDgMZJ0DLDweBgGIaGw8awaBhjrYbGoeOB8MkAyPJxMQgYbAw6AmAYQR05o0NjbUdMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7UGQRgAQ9NFM9eeACLqZp5689gEXQ2T7354ApPhuoXz3gBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+        audio.src = 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAeMwAUFBQUFCgUFBQUFDMzMzMzM0dHR0dHR1tbW1tbW2ZmZmZmZnp6enp6eoODg4ODg5eXl5eXl6ysrKysrMDAwMDAwNTU1NTU1Ojo6Ojo6P39/f39/f///////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7UGQAAANUMEoFPeACNQUIwKe8AEeQUaQU94AIwgoghp7wAQAAAP/////KZ0UP/JBEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg/P/8YP/kQMKJ98QMHDgPmgIEBcF0Q3jgPHaBwEcU7JoUJ0EIoCBwMIHDQIKg4EAIVESBEKCcy4bkHKAcDgMZJ0DLDweBgGIaGw8awaBhjrYbGoeOB8MkAyPJxMQgYbAw6AmAYQR05o0NjbUdMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7UGQRgAQ9NFM9eeACLqZp5689gEXQ2T7354ApPhuoXz3gBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
         audio.volume = 0.15; // Lower volume for miss sound
         audio.playbackRate = 0.7; // Lower pitch for miss sound
         audio.play();

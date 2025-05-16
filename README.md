@@ -18,10 +18,15 @@ A simple full-screen clicking game designed for toddlers to practice mouse coord
 
 ## Difficulty Levels
 
+0. **Level 0 (Very Easy)**: 
+   - Extra large target (240px)
+   - Target grows significantly when hovered over
+   - Perfect for the youngest toddlers just learning to use a mouse
+
 1. **Level 1 (Easy)**: 
    - Large target (120px)
    - Target grows when hovered over
-   - Perfect for beginners and very young toddlers
+   - Great for beginners and very young toddlers
 
 2. **Level 2 (Medium)**:
    - Large target (120px)
@@ -31,7 +36,57 @@ A simple full-screen clicking game designed for toddlers to practice mouse coord
 3. **Level 3 (Hard)**:
    - Smaller target (80px)
    - No hover effect
-   - For toddlers who have mastered the basics and need more challenge
+   - For toddlers who have mastered the basics
+
+4. **Level 4 (Challenging)**:
+   - Even smaller target (70px)
+   - Target shrinks when hovered over
+   - Introduces new challenge of handling negative hover effects
+
+5. **Level 5 (Advanced)**:
+   - Small target (60px)
+   - Rapid shrink effect on hover
+   - Slight movement of target
+   - Begins introducing movement mechanics
+
+6. **Level 6 (Tricky)**:
+   - Smaller target (55px)
+   - Shrinks on hover
+   - Moderate fade and movement effects
+   - First level with fading effects
+
+7. **Level 7 (Complex)**:
+   - Small target (50px)
+   - Shrinks and fades on hover
+   - Faster movement
+   - Size changes (pulsating effect)
+   - Combines multiple effects for higher difficulty
+
+8. **Level 8 (Advanced)**:
+   - Small target (50px)
+   - Random position shifts when hovered
+   - Moderate fading effects
+   - Occasional teleportation to new locations
+   - Requires quick reactions and precision
+
+9. **Level 9 (Master)**:
+   - Very small target (45px)
+   - Random position shifts on hover
+   - Gliding movement between positions
+   - Size changing effects
+   - Teleportation effects
+   - Multiple simultaneous movement types for challenging gameplay
+
+10. **Level 10 (Expert)**:
+    - Tiny target (35px)
+    - Random scaling on hover
+    - Extreme position shifts when hovered
+    - Very fast fading
+    - Rapid movement and gliding
+    - Constant jitter effect
+    - Dramatic size changes
+    - Frequent teleportation
+    - The ultimate challenge for advanced players
 
 ## Game Progression
 
@@ -73,5 +128,6 @@ This feature helps monitor your child's improvement over time and provides visua
 - The game is designed to be simple and engaging for young children
 - Right-click context menus are completely disabled to avoid confusing your toddler
 - The level progression system helps keep your child motivated and challenged
+- Levels 0-3 are suitable for young toddlers, while levels 4-10 offer increasing challenges for older children
 
 Enjoy watching your little one develop their mouse skills! 
