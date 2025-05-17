@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const levelDisplay = document.getElementById('level-display');
     const startBtn = document.getElementById('start-game');
     const menuBtn = document.getElementById('menu-btn');
+    const streakSlider = document.getElementById('streak-slider');
+    const streakValueDisplay = document.getElementById('streak-value');
     
     // Difficulty buttons
     const level0Btn = document.getElementById('level0');
@@ -47,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isFullscreen = false;
     let gameActive = false;
     let successStreak = 0;
-    const STREAK_TO_ADVANCE = 10;
+    let STREAK_TO_ADVANCE = 10;
     const MIN_ACCURACY = 30;
     
     // Target animation variables
@@ -70,6 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
         '#3A86FF'  // blue
     ];
     
+    // Initialize streak slider
+    streakSlider.addEventListener('input', () => {
+        STREAK_TO_ADVANCE = parseInt(streakSlider.value);
+        streakValueDisplay.textContent = STREAK_TO_ADVANCE;
+    });
+    
     // Apply difficulty settings
     function applyDifficultySettings() {
         // Reset target styles and clear any ongoing animations
@@ -78,6 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(glideInterval);
         clearInterval(sizeChangeInterval);
         clearInterval(teleportInterval);
+        
+        // Show original target for non-multiple target levels
+        if (currentDifficulty < 9) {
+            targetEl.style.display = 'block';
+        }
         
         targetEl.style.transition = 'transform 0.2s, background-color 0.3s';
         targetEl.style.opacity = '1';
@@ -188,69 +201,40 @@ document.addEventListener('DOMContentLoaded', () => {
             
             startTeleportEffect(5000);
         }
-        // Level 9 - Master: Very small target with erratic movement, gliding and strong fade
+        // Level 9 - Master: Fast moving target with multiple effects
         else if (currentDifficulty === 9) {
             targetEl.style.width = '45px';
             targetEl.style.height = '45px';
-            targetEl.style.transition = 'transform 0.15s, background-color 0.3s, opacity 0.5s';
             targetEl.onmouseover = () => {
-                targetEl.style.transform = 'scale(0.6)';
-                const randomX = (Math.random() - 0.5) * 30;
-                const randomY = (Math.random() - 0.5) * 30;
-                targetEl.style.marginLeft = `${randomX}px`;
-                targetEl.style.marginTop = `${randomY}px`;
+                targetEl.style.transform = 'scale(0.7)';
+                const smallShift = (Math.random() - 0.5) * 30;
+                targetEl.style.marginLeft = `${smallShift}px`;
+                targetEl.style.marginTop = `${smallShift}px`;
             };
             
-            startFadeEffect(0.25, 1200);
-            startMovingTarget(1200);
-            
-            startGlidingEffect(1600);
-            
-            startSizeChangeEffect(0.8, 1.2, 1400);
-            
-            startTeleportEffect(3500);
+            // Combine multiple effects for increased difficulty
+            startFadeEffect(0.2, 800);
+            startMovingTarget(600);
+            startGlidingEffect(1000);
+            startSizeChangeEffect(0.8, 1.2, 1500);
         }
-        // Level 10 - Expert: Tiny target with extreme movement, fade, gliding and teleportation
+        // Level 10 - Expert: Extremely challenging single target
         else if (currentDifficulty === 10) {
             targetEl.style.width = '35px';
             targetEl.style.height = '35px';
-            targetEl.style.transition = 'transform 0.1s, background-color 0.3s, opacity 0.3s';
             targetEl.onmouseover = () => {
-                // Random transform on hover
-                const scale = 0.4 + Math.random() * 0.2;
-                targetEl.style.transform = `scale(${scale})`;
-                // Random position shift on hover
-                const randomX = (Math.random() - 0.5) * 60;
-                const randomY = (Math.random() - 0.5) * 60;
-                targetEl.style.marginLeft = `${randomX}px`;
-                targetEl.style.marginTop = `${randomY}px`;
+                targetEl.style.transform = 'scale(0.6)';
+                const shift = (Math.random() - 0.5) * 40;
+                targetEl.style.marginLeft = `${shift}px`;
+                targetEl.style.marginTop = `${shift}px`;
             };
             
-            // Add very fast fade and extremely rapid movement
-            startFadeEffect(0.15, 800);
-            startMovingTarget(700);
-            
-            // Add jitter effect
-            const jitterInterval = setInterval(() => {
-                if (!gameActive) {
-                    clearInterval(jitterInterval);
-                    return;
-                }
-                
-                const jitterX = (Math.random() - 0.5) * 10;
-                const jitterY = (Math.random() - 0.5) * 10;
-                targetEl.style.marginLeft = `${jitterX}px`;
-                targetEl.style.marginTop = `${jitterY}px`;
-            }, 100);
-            
-            // Add rapid gliding movement
+            // Combine all effects at their most challenging settings
+            startFadeEffect(0.15, 600);
+            startMovingTarget(500);
             startGlidingEffect(800);
-            
-            // Add dramatic size changes
-            startSizeChangeEffect(0.6, 1.4, 900);
-            
-            // Add frequent teleportation
-            startTeleportEffect(1700);
+            startSizeChangeEffect(0.7, 1.3, 1200);
+            startTeleportEffect(3000);
         }
         // Default fallback
         else {
@@ -396,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function handleTargetClick(e) {
-        // Prevent default behavior to handle both left and right clicks
+        // Prevent default behavior
         e.preventDefault();
         
         // Play sound
@@ -419,9 +403,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Add visual feedback
-        playHappyAnimation();
+        playHappyAnimation(e.target);
         
-        // Move target to new position and change color
+        // Move and change color
         positionTarget();
         changeTargetColor();
     }
@@ -478,487 +462,138 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         targetEl.style.backgroundColor = randomColor;
     }
-    
-    function playClickSound() {
-        // Create audio element
-        const audio = new Audio();
-        
-        // Alternate between different sounds
-        if (clickCount % 3 === 0) {
-            audio.src = 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAeMwAUFBQUFCgUFBQUFDMzMzMzM0dHR0dHR1tbW1tbW2ZmZmZmZnp6enp6eoODg4ODg5eXl5eXl6ysrKysrMDAwMDAwNTU1NTU1Ojo6Ojo6P39/f39/f///////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7UGQAAANUMEoFPeACNQUIwKe8AEeQUaQU94AIwgoghp7wAQAAAP/////KZ0UP/JBEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg/P/8YP/kQMKJ98QMHDgPmgIEBcF0Q3jgPHaBwEcU7JoUJ0EIoCBwMIHDQIKg4EAIVESBEKCcy4bkHKAcDgMZJ0DLDweBgGIaGw8awaBhjrYbGoeOB8MkAyPJxMQgYbAw6AmAYQR05o0NjbUdMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7UGQRgAQ9NFM9eeACLqZp5689gEXQ2T7354ApPhuoXz3gBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
-        } else if (clickCount % 2 === 0) {
-            audio.src = 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAeMwAUFBQUFCgUFBQUFDMzMzMzM0dHR0dHR1tbW1tbW2ZmZmZmZnp6enp6eoODg4ODg5eXl5eXl6ysrKysrMDAwMDAwNTU1NTU1Ojo6Ojo6P39/f39/f///////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7UGQAAANUMEoFPeACNQUIwKe8AEeQUaQU94AIwgoghp7wAQAAAP/////KZ0UP/JBEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg/P/8YP/kQMKJ98QMHDgPmgIEBcF0Q3jgPHaBwEcU7JoUJ0EIoCBwMIHDQIKg4EAIVESBEKCcy4bkHKAcDgMZJ0DLDweBgGIaGw8awaBhjrYbGoeOB8MkAyPJxMQgYbAw6AmAYQR05o0NjbUdMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7UGQRgAQ9NFM9eeACLqZp5689gEXQ2T7354ApPhuoXz3gBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
-        } else {
-            audio.src = 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAeMwAUFBQUFCgUFBQUFDMzMzMzM0dHR0dHR1tbW1tbW2ZmZmZmZnp6enp6eoODg4ODg5eXl5eXl6ysrKysrMDAwMDAwNTU1NTU1Ojo6Ojo6P39/f39/f///////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7UGQAAANUMEoFPeACNQUIwKe8AEeQUaQU94AIwgoghp7wAQAAAP/////KZ0UP/JBEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg/P/8YP/kQMKJ98QMHDgPmgIEBcF0Q3jgPHaBwEcU7JoUJ0EIoCBwMIHDQIKg4EAIVESBEKCcy4bkHKAcDgMZJ0DLDweBgGIaGw8awaBhjrYbGoeOB8MkAyPJxMQgYbAw6AmAYQR05o0NjbUdMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7UGQRgAQ9NFM9eeACLqZp5689gEXQ2T7354ApPhuoXz3gBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
-        }
-        
-        audio.volume = 0.3;
-        audio.play();
-    }
-    
-    function playMissSound() {
-        // Create audio element for miss sound
-        const audio = new Audio();
-        audio.src = 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAeMwAUFBQUFCgUFBQUFDMzMzMzM0dHR0dHR1tbW1tbW2ZmZmZmZnp6enp6eoODg4ODg5eXl5eXl6ysrKysrMDAwMDAwNTU1NTU1Ojo6Ojo6P39/f39/f///////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7UGQAAANUMEoFPeACNQUIwKe8AEeQUaQU94AIwgoghp7wAQAAAP/////KZ0UP/JBEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg/P/8YP/kQMKJ98QMHDgPmgIEBcF0Q3jgPHaBwEcU7JoUJ0EIoCBwMIHDQIKg4EAIVESBEKCcy4bkHKAcDgMZJ0DLDweBgGIaGw8awaBhjrYbGoeOB8MkAyPJxMQgYbAw6AmAYQR05o0NjbUdMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7UGQRgAQ9NFM9eeACLqZp5689gEXQ2T7354ApPhuoXz3gBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
-        audio.volume = 0.15; // Lower volume for miss sound
-        audio.playbackRate = 0.7; // Lower pitch for miss sound
-        audio.play();
-    }
-    
-    function playHappyAnimation() {
-        // Create and append temporary elements for animation
-        const emojis = ['🎉', '🌟', '👏', '💖', '🎈'];
-        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-        
-        // Create multiple particles
-        for (let i = 0; i < 3; i++) {
-            const animElement = document.createElement('div');
-            animElement.className = 'happy-animation';
-            animElement.style.position = 'absolute';
-            
-            // Position around the clicked target
-            const targetRect = targetEl.getBoundingClientRect();
-            const offsetX = (Math.random() - 0.5) * 60;
-            const offsetY = (Math.random() - 0.5) * 60;
-            
-            animElement.style.left = `${targetRect.left + targetRect.width/2 + offsetX}px`;
-            animElement.style.top = `${targetRect.top + targetRect.height/2 + offsetY}px`;
-            
-            animElement.style.fontSize = '40px';
-            animElement.textContent = randomEmoji;
-            animElement.style.zIndex = '5';
-            animElement.style.transition = 'all 0.8s ease-out';
-            animElement.style.opacity = '1';
-            
-            document.body.appendChild(animElement);
-            
-            // Animate and remove
-            setTimeout(() => {
-                animElement.style.transform = `translateY(-${50 + Math.random() * 50}px)`;
-                animElement.style.opacity = '0';
-            }, 50);
-            
-            setTimeout(() => {
-                document.body.removeChild(animElement);
-            }, 1000);
-        }
-    }
-    
-    // Handle window resize to ensure target stays visible
-    window.addEventListener('resize', () => {
-        positionTarget();
-    });
-    
-    // Handle fullscreen change
-    document.addEventListener('fullscreenchange', () => {
-        isFullscreen = !!document.fullscreenElement;
-    });
-    
-    // Game Over
-    function showGameOver() {
-        gameActive = false;
-        
-        // Stop any animations
-        clearInterval(fadeInterval);
-        clearInterval(moveInterval);
-        
-        // Update final stats
-        finalScoreEl.textContent = `Score: ${clickCount}`;
-        const accuracy = Math.round((clickCount / totalClicks) * 100);
-        finalAccuracyEl.textContent = `Accuracy: ${accuracy}%`;
-        finalLevelEl.textContent = `Level: ${currentDifficulty}`;
-        
-        // Show game over screen
-        gameOverEl.style.display = 'flex';
-    }
-    
-    // Level Complete
-    function showLevelComplete() {
-        gameActive = false;
-        
-        // Stop any animations
-        clearInterval(fadeInterval);
-        clearInterval(moveInterval);
-        
-        // Update level stats
-        levelScoreEl.textContent = `Score: ${clickCount}`;
-        const accuracy = Math.round((clickCount / totalClicks) * 100);
-        levelAccuracyEl.textContent = `Accuracy: ${accuracy}%`;
-        levelCompletedEl.textContent = `Level Completed: ${currentDifficulty}`;
-        
-        // Show level complete screen
-        levelCompleteEl.style.display = 'flex';
-    }
-    
-    // Try Again Button
-    tryAgainBtn.addEventListener('click', () => {
-        // Hide game over screen
-        gameOverEl.style.display = 'none';
-        
-        // Reset game state
-        clickCount = 0;
-        missCount = 0;
-        totalClicks = 0;
-        successStreak = 0;
-        scoreDisplay.textContent = `Clicks: ${clickCount}`;
-        accuracyDisplay.textContent = `Accuracy: 100%`;
-        streakDisplay.textContent = `Streak: ${successStreak}`;
-        
-        // Make game active again
-        gameActive = true;
-        
-        // Reposition target
-        positionTarget();
-        changeTargetColor();
-    });
-    
-    // Back to Menu Buttons
-    backToMenuBtn.addEventListener('click', () => {
-        gameOverEl.style.display = 'none';
-        gameContainerEl.style.display = 'none';
-        menuEl.style.display = 'flex';
-    });
-    
-    levelMenuBtn.addEventListener('click', () => {
-        levelCompleteEl.style.display = 'none';
-        gameContainerEl.style.display = 'none';
-        menuEl.style.display = 'flex';
-    });
-    
-    // Next Level Button
-    nextLevelBtn.addEventListener('click', () => {
-        // Hide level complete screen
-        levelCompleteEl.style.display = 'none';
-        
-        // Increment difficulty (max 10)
-        currentDifficulty = Math.min(currentDifficulty + 1, 10);
-        
-        // Update active button in menu (for when they return to menu)
-        if (currentDifficulty === 0) {
-            setActiveButton(level0Btn);
-        } else if (currentDifficulty === 1) {
-            setActiveButton(level1Btn);
-        } else if (currentDifficulty === 2) {
-            setActiveButton(level2Btn);
-        } else if (currentDifficulty === 3) {
-            setActiveButton(level3Btn);
-        } else if (currentDifficulty === 4) {
-            setActiveButton(level4Btn);
-        } else if (currentDifficulty === 5) {
-            setActiveButton(level5Btn);
-        } else if (currentDifficulty === 6) {
-            setActiveButton(level6Btn);
-        } else if (currentDifficulty === 7) {
-            setActiveButton(level7Btn);
-        } else if (currentDifficulty === 8) {
-            setActiveButton(level8Btn);
-        } else if (currentDifficulty === 9) {
-            setActiveButton(level9Btn);
-        } else if (currentDifficulty === 10) {
-            setActiveButton(level10Btn);
-        }
-        
-        // Reset game state
-        clickCount = 0;
-        missCount = 0;
-        totalClicks = 0;
-        successStreak = 0;
-        scoreDisplay.textContent = `Clicks: ${clickCount}`;
-        accuracyDisplay.textContent = `Accuracy: 100%`;
-        streakDisplay.textContent = `Streak: ${successStreak}`;
-        
-        // Apply new difficulty settings
-        applyDifficultySettings();
-        
-        // Make game active again
-        gameActive = true;
-        
-        // Reposition target
-        positionTarget();
-        changeTargetColor();
-    });
-    
-    // Start fade animation effect
-    function startFadeEffect(minOpacity, duration) {
-        clearInterval(fadeInterval);
-        fadeInterval = setInterval(() => {
-            if (!gameActive) return;
-            
-            // Fade out
-            targetEl.style.transition = `opacity ${duration/2}ms ease-in-out`;
-            targetEl.style.opacity = minOpacity;
-            
-            // Fade back in after half the duration
-            setTimeout(() => {
-                if (!gameActive) return;
-                targetEl.style.opacity = '1';
-            }, duration/2);
-        }, duration);
-    }
-    
-    // Start moving target animation
-    function startMovingTarget(interval) {
+
+    function startMovingTarget(interval, target = targetEl) {
         clearInterval(moveInterval);
         moveInterval = setInterval(() => {
-            if (!gameActive) return;
-            
-            // For higher difficulty levels, add some randomness to movement
-            if (currentDifficulty >= 8) {
-                // Random quick position changes
-                const quickMove = () => {
-                    try {
-                        // Get container dimensions
-                        const containerWidth = gameContainerEl.clientWidth;
-                        const containerHeight = gameContainerEl.clientHeight;
-                        
-                        // Calculate maximum position values (accounting for target size)
-                        const maxX = containerWidth - targetEl.offsetWidth;
-                        const maxY = containerHeight - targetEl.offsetHeight;
-                        
-                        // When difficulty is high, sometimes make larger jumps
-                        let jumpFactor = 1;
-                        if (currentDifficulty >= 9 && Math.random() > 0.7) {
-                            jumpFactor = 2;
-                        }
-                        
-                        // Ensure target has valid initial position
-                        if (!targetEl.style.left || !targetEl.style.top) {
-                            targetEl.style.left = `${containerWidth / 2}px`;
-                            targetEl.style.top = `${containerHeight / 2}px`;
-                        }
-                        
-                        // Generate random position with constraints
-                        let currentX = parseInt(targetEl.style.left) || 0;
-                        let currentY = parseInt(targetEl.style.top) || 0;
-                        
-                        // Extra safety check - if we get unreasonable values, reset
-                        if (isNaN(currentX) || isNaN(currentY) || 
-                            currentX < 0 || currentX > containerWidth || 
-                            currentY < 0 || currentY > containerHeight) {
-                            console.log("Invalid position detected, resetting");
-                            currentX = containerWidth / 2;
-                            currentY = containerHeight / 2;
-                            targetEl.style.left = `${currentX}px`;
-                            targetEl.style.top = `${currentY}px`;
-                        }
-                        
-                        const moveRadius = 200 * jumpFactor;
-                        
-                        // Calculate new position within move radius
-                        let newX = currentX + (Math.random() - 0.5) * moveRadius;
-                        let newY = currentY + (Math.random() - 0.5) * moveRadius;
-                        
-                        // Ensure the target stays within bounds
-                        newX = Math.max(0, Math.min(newX, maxX));
-                        newY = Math.max(0, Math.min(newY, maxY));
-                        
-                        // Define safe zones (areas to avoid)
-                        const scoreAreaWidth = 180; // Width of the score display area
-                        const menuButtonWidth = 100; // Width of the menu button area
-                        const topMargin = 220;      // Height of the top margin to avoid score display
-                        
-                        // Check if new position is in a restricted area and adjust if needed
-                        if ((newX > maxX - scoreAreaWidth && newY < topMargin) || 
-                            (newX < menuButtonWidth && newY < topMargin)) {
-                            // Move to center if in restricted area
-                            newY = Math.max(topMargin, newY);
-                        }
-                        
-                        // Apply position with easing for smoother movement
-                        const transitionTime = currentDifficulty >= 10 ? '0.2s' : '0.4s';
-                        targetEl.style.transition = `left ${transitionTime} ease-out, top ${transitionTime} ease-out`;
-                        targetEl.style.left = `${newX}px`;
-                        targetEl.style.top = `${newY}px`;
-                        
-                        // Reset transition after movement completes
-                        setTimeout(() => {
-                            targetEl.style.transition = 'transform 0.2s, background-color 0.3s, opacity 0.3s';
-                        }, currentDifficulty >= 10 ? 200 : 400);
-                    } catch (e) {
-                        console.error("Error in quickMove:", e);
-                        // In case of error, use the safe positioning function
-                        positionTargetSafely();
-                    }
-                };
-                
-                quickMove();
+            const x = Math.random() * (window.innerWidth - target.offsetWidth);
+            const y = Math.random() * (window.innerHeight - target.offsetHeight);
+            target.style.left = `${x}px`;
+            target.style.top = `${y}px`;
+        }, interval);
+    }
+
+    function startFadeEffect(minOpacity, interval, target = targetEl) {
+        clearInterval(fadeInterval);
+        let fadeOut = true;
+        fadeInterval = setInterval(() => {
+            const currentOpacity = parseFloat(target.style.opacity) || 1;
+            if (fadeOut) {
+                target.style.opacity = Math.max(minOpacity, currentOpacity - 0.1);
+                if (parseFloat(target.style.opacity) <= minOpacity) fadeOut = false;
             } else {
-                // Standard position change for lower difficulties
-                positionTarget();
+                target.style.opacity = Math.min(1, currentOpacity + 0.1);
+                if (parseFloat(target.style.opacity) >= 1) fadeOut = true;
             }
-        }, interval);
+        }, interval / 10);
     }
-    
-    // Start size change effect
-    function startSizeChangeEffect(minScale, maxScale, duration) {
-        clearInterval(sizeChangeInterval);
-        sizeChangeInterval = setInterval(() => {
-            if (!gameActive) return;
-            
-            // Calculate scale
-            const scale = Math.random() * (maxScale - minScale) + minScale;
-            
-            // Apply scale
-            targetEl.style.transform = `scale(${scale})`;
-            
-            // Reset scale after duration
-            setTimeout(() => {
-                if (!gameActive) return;
-                targetEl.style.transform = 'scale(1)';
-            }, duration);
-        }, duration);
-    }
-    
-    // Start teleportation effect
-    function startTeleportEffect(interval) {
-        clearInterval(teleportInterval);
-        
-        teleportInterval = setInterval(() => {
-            if (!gameActive) return;
-            
-            // Make the target briefly disappear
-            targetEl.style.opacity = '0';
-            
-            // After a short delay, teleport and reappear
-            setTimeout(() => {
-                if (!gameActive) return;
-                
-                // Position to a completely new location with safe zones
-                positionTargetSafely();
-                
-                // Random size change for higher difficulties
-                if (currentDifficulty >= 9) {
-                    const randomScale = 0.8 + Math.random() * 0.4;
-                    targetEl.style.transform = `scale(${randomScale})`;
-                }
-                
-                // Reappear
-                targetEl.style.opacity = '1';
-            }, 200);
-        }, interval);
-    }
-    
-    // Safe positioning function to avoid UI elements
-    function positionTargetSafely() {
-        // Get container dimensions
-        const containerWidth = gameContainerEl.clientWidth;
-        const containerHeight = gameContainerEl.clientHeight;
-        
-        // Calculate maximum position values (accounting for target size)
-        const maxX = containerWidth - targetEl.offsetWidth;
-        const maxY = containerHeight - targetEl.offsetHeight;
-        
-        // Define safe zones (areas to avoid)
-        const scoreAreaWidth = 180; // Width of the score display area
-        const menuButtonWidth = 100; // Width of the menu button area
-        const topMargin = 220;     // Height of the top margin to avoid score display
-        
-        // Generate random position
-        let randomX, randomY;
-        
-        // Keep generating positions until we find one not in a restricted area
-        do {
-            randomX = Math.floor(Math.random() * maxX);
-            randomY = Math.floor(Math.random() * maxY);
-        } while (
-            // Avoid top-right corner (score display area)
-            (randomX > maxX - scoreAreaWidth && randomY < topMargin) ||
-            // Avoid top-left corner (menu button area)
-            (randomX < menuButtonWidth && randomY < topMargin)
-        );
-        
-        // Apply position
-        targetEl.style.left = `${randomX}px`;
-        targetEl.style.top = `${randomY}px`;
-    }
-    
-    // Start gliding movement effect
-    function startGlidingEffect(interval) {
+
+    function startGlidingEffect(interval, target = targetEl) {
         clearInterval(glideInterval);
-        
-        // Initial position
-        const containerWidth = gameContainerEl.clientWidth;
-        const containerHeight = gameContainerEl.clientHeight;
-        const maxX = containerWidth - targetEl.offsetWidth;
-        const maxY = containerHeight - targetEl.offsetHeight;
-        
-        // Define safe zones (areas to avoid)
-        const scoreAreaWidth = 180; // Width of the score display area
-        const menuButtonWidth = 100; // Width of the menu button area
-        const topMargin = 220;     // Height of the top margin to avoid score display
-        
-        // Ensure target has valid initial position
-        if (!targetEl.style.left || !targetEl.style.top) {
-            targetEl.style.left = '50%';
-            targetEl.style.top = '50%';
-            positionTargetSafely();
-        }
-        
-        // Set initial destination (ensuring it's not in a restricted area)
-        let destX, destY;
-        do {
-            destX = Math.random() * maxX;
-            destY = Math.random() * maxY;
-        } while (
-            // Avoid top-right corner (score display area)
-            (destX > maxX - scoreAreaWidth && destY < topMargin) ||
-            // Avoid top-left corner (menu button area)
-            (destX < menuButtonWidth && destY < topMargin)
-        );
-        
         glideInterval = setInterval(() => {
-            if (!gameActive) return;
+            const currentX = parseFloat(target.style.left) || window.innerWidth / 2;
+            const currentY = parseFloat(target.style.top) || window.innerHeight / 2;
+            const newX = currentX + (Math.random() - 0.5) * 100;
+            const newY = currentY + (Math.random() - 0.5) * 100;
             
-            // Get current position with safe parsing
-            let currentX = 0;
-            let currentY = 0;
-            
-            try {
-                // Handle cases where parseInt might return NaN
-                currentX = parseInt(targetEl.style.left) || 0;
-                currentY = parseInt(targetEl.style.top) || 0;
-                
-                // Extra safety check - if we get unreasonable values, reset
-                if (isNaN(currentX) || isNaN(currentY) || 
-                    currentX < 0 || currentX > containerWidth || 
-                    currentY < 0 || currentY > containerHeight) {
-                    console.log("Invalid position detected, resetting");
-                    currentX = containerWidth / 2;
-                    currentY = containerHeight / 2;
-                    targetEl.style.left = `${currentX}px`;
-                    targetEl.style.top = `${currentY}px`;
-                }
-            } catch (e) {
-                console.error("Error parsing position:", e);
-                currentX = containerWidth / 2;
-                currentY = containerHeight / 2;
-                targetEl.style.left = `${currentX}px`;
-                targetEl.style.top = `${currentY}px`;
-            }
-            
-            // Calculate step size
-            const stepFactor = currentDifficulty >= 10 ? 0.08 : 0.05;
-            const stepX = (destX - currentX) * stepFactor;
-            const stepY = (destY - currentY) * stepFactor;
-            
-            // Apply movement
-            targetEl.style.transition = 'none'; // For smooth gliding
-            targetEl.style.left = `${currentX + stepX}px`;
-            targetEl.style.top = `${currentY + stepY}px`;
-            
-            // When close to destination, pick a new destination
-            if (Math.abs(currentX - destX) < 10 && Math.abs(currentY - destY) < 10) {
-                // Set new destination (ensuring it's not in a restricted area)
-                do {
-                    destX = Math.random() * maxX;
-                    destY = Math.random() * maxY;
-                } while (
-                    // Avoid top-right corner (score display area)
-                    (destX > maxX - scoreAreaWidth && destY < topMargin) ||
-                    // Avoid top-left corner (menu button area)
-                    (destX < menuButtonWidth && destY < topMargin)
-                );
-            }
-        }, 30); // Update at 30ms for smoother animation
+            // Keep target within bounds
+            target.style.left = `${Math.max(0, Math.min(window.innerWidth - target.offsetWidth, newX))}px`;
+            target.style.top = `${Math.max(0, Math.min(window.innerHeight - target.offsetHeight, newY))}px`;
+        }, interval / 10);
     }
-}); 
+
+    function startSizeChangeEffect(minScale, maxScale, interval, target = targetEl) {
+        clearInterval(sizeChangeInterval);
+        let growing = true;
+        let scale = 1;
+        sizeChangeInterval = setInterval(() => {
+            if (growing) {
+                scale += 0.05;
+                if (scale >= maxScale) growing = false;
+            } else {
+                scale -= 0.05;
+                if (scale <= minScale) growing = true;
+            }
+            target.style.transform = `scale(${scale})`;
+        }, interval / 20);
+    }
+
+    function startTeleportEffect(interval, target = targetEl) {
+        clearInterval(teleportInterval);
+        teleportInterval = setInterval(() => {
+            const x = Math.random() * (window.innerWidth - target.offsetWidth);
+            const y = Math.random() * (window.innerHeight - target.offsetHeight);
+            target.style.transition = 'none';
+            target.style.left = `${x}px`;
+            target.style.top = `${y}px`;
+            setTimeout(() => {
+                target.style.transition = 'transform 0.2s, background-color 0.3s';
+            }, 50);
+        }, interval);
+    }
+
+    function positionTargetSafely(target = targetEl) {
+        const margin = 50; // Minimum distance from edges
+        const x = margin + Math.random() * (window.innerWidth - target.offsetWidth - 2 * margin);
+        const y = margin + Math.random() * (window.innerHeight - target.offsetHeight - 2 * margin);
+        target.style.left = `${x}px`;
+        target.style.top = `${y}px`;
+    }
+
+    function playClickSound() {
+        // Placeholder for sound effect
+        // You can implement actual sound here
+    }
+
+    function playMissSound() {
+        // Placeholder for sound effect
+        // You can implement actual sound here
+    }
+
+    function playHappyAnimation(target) {
+        target.classList.add('happy-animation');
+        setTimeout(() => {
+            target.classList.remove('happy-animation');
+        }, 500);
+    }
+
+    function showGameOver() {
+        gameActive = false;
+        gameOverEl.style.display = 'flex';
+        finalScoreEl.textContent = `Score: ${clickCount}`;
+        finalAccuracyEl.textContent = `Accuracy: ${Math.round((clickCount / totalClicks) * 100)}%`;
+        finalLevelEl.textContent = `Level: ${currentDifficulty}`;
+    }
+
+    function showLevelComplete() {
+        gameActive = false;
+        levelCompleteEl.style.display = 'flex';
+        levelScoreEl.textContent = `Score: ${clickCount}`;
+        levelAccuracyEl.textContent = `Accuracy: ${Math.round((clickCount / totalClicks) * 100)}%`;
+        levelCompletedEl.textContent = `Level Completed: ${currentDifficulty}`;
+    }
+
+    // Add event listeners for game over and level complete buttons
+    tryAgainBtn.addEventListener('click', () => {
+        gameOverEl.style.display = 'none';
+        startBtn.click();
+    });
+
+    backToMenuBtn.addEventListener('click', () => {
+        gameOverEl.style.display = 'none';
+        menuEl.style.display = 'flex';
+        gameContainerEl.style.display = 'none';
+    });
+
+    nextLevelBtn.addEventListener('click', () => {
+        levelCompleteEl.style.display = 'none';
+        currentDifficulty = Math.min(10, currentDifficulty + 1);
+        startBtn.click();
+    });
+
+    levelMenuBtn.addEventListener('click', () => {
+        levelCompleteEl.style.display = 'none';
+        menuEl.style.display = 'flex';
+        gameContainerEl.style.display = 'none';
+    });
+});
