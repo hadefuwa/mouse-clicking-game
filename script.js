@@ -159,15 +159,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Level 6 - Tricky: Small target with faster fade and movement
         else if (currentDifficulty === 6) {
-            targetEl.style.width = '55px';
-            targetEl.style.height = '55px';
+            targetEl.style.width = '110px';  // Doubled from 55px
+            targetEl.style.height = '110px';  // Doubled from 55px
             targetEl.onmouseover = () => {
                 targetEl.style.transform = 'scale(0.7)';
             };
             
             // Add moderate fade and movement effects
             startFadeEffect(0.4, 2000);
-            startMovingTarget(2500);
+            startMovingTarget(2500);  // Keeping the same fast movement
         }
         // Level 7 - Complex: Small target with faster fade and rapid movement plus size changes
         else if (currentDifficulty === 7) {
