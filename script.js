@@ -146,16 +146,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Level 5 - Advanced: Even smaller target with rapid shrink effect
         else if (currentDifficulty === 5) {
-            targetEl.style.width = '70px';
-            targetEl.style.height = '70px';
+            targetEl.style.width = '90px';
+            targetEl.style.height = '90px';
             targetEl.onmouseover = () => {
-                targetEl.style.transform = 'scale(0.8)';
+                targetEl.style.transform = 'scale(0.85)';
                 setTimeout(() => {
-                    targetEl.style.transform = 'scale(0.9)';
-                }, 200);
+                    targetEl.style.transform = 'scale(0.95)';
+                }, 300);
             };
             // Add slight movement with longer interval
-            startMovingTarget(5000);
+            startMovingTarget(7000);
         }
         // Level 6 - Tricky: Small target with faster fade and movement
         else if (currentDifficulty === 6) {
