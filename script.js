@@ -159,8 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Level 6 - Tricky: Small target with faster fade and movement
         else if (currentDifficulty === 6) {
-            targetEl.style.width = '110px';  // Doubled from 55px
-            targetEl.style.height = '110px';  // Doubled from 55px
+            targetEl.style.width = '150px';  // Increased from 110px
+            targetEl.style.height = '150px';  // Increased from 110px
             targetEl.onmouseover = () => {
                 targetEl.style.transform = 'scale(0.7)';
             };
