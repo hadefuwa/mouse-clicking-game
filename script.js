@@ -169,8 +169,20 @@ document.addEventListener('DOMContentLoaded', () => {
             startFadeEffect(0.4, 2000);
             startMovingTarget(2500);  // Keeping the same fast movement
         }
-        // Level 7 - Complex: Small target with faster fade and rapid movement plus size changes
+        // Level 7 - Intermediate: Medium target with gentle movement and fade
         else if (currentDifficulty === 7) {
+            targetEl.style.width = '100px';
+            targetEl.style.height = '100px';
+            targetEl.onmouseover = () => {
+                targetEl.style.transform = 'scale(0.9)';
+            };
+            
+            // Add gentle fade effect and slow movement
+            startFadeEffect(0.5, 3000);
+            startMovingTarget(4000);
+        }
+        // Level 8 - Complex: Small target with faster fade and rapid movement plus size changes
+        else if (currentDifficulty === 8) {
             targetEl.style.width = '50px';
             targetEl.style.height = '50px';
             targetEl.onmouseover = () => {
@@ -185,8 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add size change effect - pulsate
             startSizeChangeEffect(0.8, 1.2, 1800);
         }
-        // Level 8 - Advanced: Small target with unpredictable movement and teleportation
-        else if (currentDifficulty === 8) {
+        // Level 9 - Advanced: Small target with unpredictable movement and teleportation
+        else if (currentDifficulty === 9) {
             targetEl.style.width = '50px';
             targetEl.style.height = '50px';
             targetEl.onmouseover = () => {
@@ -201,8 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             startTeleportEffect(5000);
         }
-        // Level 9 - Master: Fast moving target with multiple effects
-        else if (currentDifficulty === 9) {
+        // Level 10 - Master: Fast moving target with multiple effects
+        else if (currentDifficulty === 10) {
             targetEl.style.width = '45px';
             targetEl.style.height = '45px';
             targetEl.onmouseover = () => {
@@ -217,24 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
             startMovingTarget(600);
             startGlidingEffect(1000);
             startSizeChangeEffect(0.8, 1.2, 1500);
-        }
-        // Level 10 - Expert: Extremely challenging single target
-        else if (currentDifficulty === 10) {
-            targetEl.style.width = '35px';
-            targetEl.style.height = '35px';
-            targetEl.onmouseover = () => {
-                targetEl.style.transform = 'scale(0.6)';
-                const shift = (Math.random() - 0.5) * 40;
-                targetEl.style.marginLeft = `${shift}px`;
-                targetEl.style.marginTop = `${shift}px`;
-            };
-            
-            // Combine all effects at their most challenging settings
-            startFadeEffect(0.15, 600);
-            startMovingTarget(500);
-            startGlidingEffect(800);
-            startSizeChangeEffect(0.7, 1.3, 1200);
-            startTeleportEffect(3000);
         }
         // Default fallback
         else {

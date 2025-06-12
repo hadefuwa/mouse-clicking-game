@@ -50,43 +50,39 @@ A simple full-screen clicking game designed for toddlers to practice mouse coord
    - Begins introducing movement mechanics
 
 6. **Level 6 (Tricky)**:
-   - Smaller target (55px)
+   - Larger target (150px)
    - Shrinks on hover
    - Moderate fade and movement effects
    - First level with fading effects
 
-7. **Level 7 (Complex)**:
+7. **Level 7 (Intermediate)**:
+   - Medium target (100px)
+   - Gentle hover effect
+   - Slow movement
+   - Light fade effect
+   - Perfect for transitioning to more challenging levels
+
+8. **Level 8 (Complex)**:
    - Small target (50px)
    - Shrinks and fades on hover
    - Faster movement
    - Size changes (pulsating effect)
    - Combines multiple effects for higher difficulty
 
-8. **Level 8 (Advanced)**:
+9. **Level 9 (Advanced)**:
    - Small target (50px)
    - Random position shifts when hovered
    - Moderate fading effects
    - Occasional teleportation to new locations
    - Requires quick reactions and precision
 
-9. **Level 9 (Master)**:
-   - Very small target (45px)
-   - Random position shifts on hover
-   - Gliding movement between positions
-   - Size changing effects
-   - Teleportation effects
-   - Multiple simultaneous movement types for challenging gameplay
-
-10. **Level 10 (Expert)**:
-    - Tiny target (35px)
-    - Random scaling on hover
-    - Extreme position shifts when hovered
-    - Very fast fading
-    - Rapid movement and gliding
-    - Constant jitter effect
-    - Dramatic size changes
-    - Frequent teleportation
-    - The ultimate challenge for advanced players
+10. **Level 10 (Master)**:
+    - Very small target (45px)
+    - Random position shifts on hover
+    - Gliding movement between positions
+    - Size changing effects
+    - Teleportation effects
+    - Multiple simultaneous movement types for challenging gameplay
 
 ## Game Progression
 
