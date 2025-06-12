@@ -425,10 +425,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update accuracy display
         updateScoreDisplay();
         
-        // Check for game over condition (accuracy below 30%)
-        const accuracy = Math.round((clickCount / totalClicks) * 100);
-        if (accuracy < MIN_ACCURACY && totalClicks > 5) {
-            showGameOver();
+        // Check for game over condition (accuracy below 30%) only for levels below 7
+        if (currentDifficulty < 7) {
+            const accuracy = Math.round((clickCount / totalClicks) * 100);
+            if (accuracy < MIN_ACCURACY && totalClicks > 5) {
+                showGameOver();
+            }
         }
     }
     
@@ -448,9 +450,11 @@ document.addEventListener('DOMContentLoaded', () => {
             accuracyDisplay.style.color = '#F44336'; // Red for low accuracy
         }
         
-        // Check for game over condition (accuracy below 30%)
-        if (accuracy < MIN_ACCURACY && totalClicks > 5) {
-            showGameOver();
+        // Check for game over condition (accuracy below 30%) only for levels below 7
+        if (currentDifficulty < 7) {
+            if (accuracy < MIN_ACCURACY && totalClicks > 5) {
+                showGameOver();
+            }
         }
     }
     
